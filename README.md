@@ -1,6 +1,6 @@
 <h1>ExpNo 4 : Implement A* search algorithm for a Graph</h1> 
-<h3>Name:       </h3>
-<h3>Register Number:           </h3>
+<h3>Name: V RAKSHITA      </h3>
+<h3>Register Number: 212224100049      </h3>
 <H3>Aim:</H3>
 <p>To ImplementA * Search algorithm for a Graph using Python 3.</p>
 <H3>Algorithm:</H3>
@@ -57,6 +57,88 @@
 ![image](https://github.com/natsaravanan/19AI405FUNDAMENTALSOFARTIFICIALINTELLIGENCE/assets/87870499/b1377c3f-011a-4c0f-a843-516842ae056a)
 
 <hr>
+<h2> Program </h2>
+<hr>
+
+```python
+from collections import defaultdict
+
+#Constructing a weighted graph
+def astar(start,goal):
+    #pass
+    #having 2 queues - open and closed
+    openset=set(start)
+    closed=set()
+    g = {}
+    parents = {}
+    g[start] = 0
+    parents[start] = start
+    while (len(openset)>0):
+        n = None
+        for v in openset:
+            if n==None or g[v]+heuristic(v)<g[n]+heuristic(n):
+                n=v
+        if (n==goal or graph_nodes[n]==None): #if we reach goal node or all nodes are traversed
+            pass
+        else:
+            for (m,weight) in getneighbours(n):
+                if m not in openset and m not in closed:
+                    openset.add(m)
+                    parents[m] = n
+                    g[m] = g[n] + weight
+                else:
+                    if (g[m]>g[n]+weight):
+                        g[m]=g[n]+weight
+                        parents[m]=n
+                        if m in closed:
+                            closed.remove(m)
+                            openset.add(m)
+        if(n==None):
+            return None
+        #if goal is reached move from goal node to start node--->path
+        if (n==goal):
+            path=[]
+            while parents[n]!=n:
+                path.append(n)
+                n=parents[n]
+            path.append(start)
+            path.reverse()
+            print(path)
+            return path
+        closed.add(n)
+        openset.remove(n)
+    return None
+            
+def getneighbours(n):
+    if(n in graph_nodes):
+        return graph_nodes[n]
+    else:
+        return None
+def heuristic(n):
+    return H_dist[n]
+graph = defaultdict(list)
+H_dist = {}
+nodes,edges = map(int,input().split())
+for i in range(edges):
+    u,v,cost = map(str,input().split())
+    t = (u,float(cost))
+    graph[v].append(t)
+    t1 = (v,float(cost))
+    graph[u].append(t1)
+print(graph)
+graph_nodes=graph
+for i in range(nodes):
+    node,h = map(str,input().split())
+    H_dist[node] = float(h)
+print(H_dist)
+start = input()
+goal = input()
+print(getneighbours(start))
+print(heuristic(start))
+print(heuristic(goal))
+astar(start,goal)
+```
+<hr>
 <h2>Sample Input</h2>
 <hr>
 10 14 <br>
@@ -89,6 +171,15 @@ J 0 <br>
 <hr>
 Path found: ['A', 'F', 'G', 'I', 'J']
 
+<hr>
+<h2> Output: </h2>
+<hr>
+<img width="677" height="900" alt="image" src="https://github.com/user-attachments/assets/887745c8-c7f2-43ec-b674-b5082aa4cb3c" />
+
+<img width="1829" height="485" alt="image" src="https://github.com/user-attachments/assets/21d80f44-dad4-4eee-96f1-f1c12437b88f" />
+
+
+
 
 <hr>
 <h2>Sample Graph II</h2>
@@ -117,3 +208,10 @@ G 0 <br>
 <h2>Sample Output</h2>
 <hr>
 Path found: ['A', 'E', 'D', 'G']
+
+<hr>
+<h2> Output: </h2>
+<hr>
+
+<img width="1833" height="855" alt="image" src="https://github.com/user-attachments/assets/4ca22730-a47b-4954-b708-d0dff0b397e0" />
+
